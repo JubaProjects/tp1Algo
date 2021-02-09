@@ -56,7 +56,7 @@ public class TriABulle {
         ArrayList<Integer> array = new ArrayList<>();
         Random rand = new Random();
         for (int i = 0; i<size; i++){
-            array.add(rand.nextInt(1000));
+            array.add(rand.nextInt(100000));
         }
         return array;
     }
@@ -75,7 +75,7 @@ public class TriABulle {
     public static void averageTime(){
         float s=0;
         int i=1;
-        while (i<=10){
+        while (i<=100){
             s=s+test_Tri_A_Bulle();
             i++;
         }

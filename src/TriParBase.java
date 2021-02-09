@@ -44,7 +44,7 @@ public class TriParBase {
     }
 
     /**Tri par dénombrement*/
-    public void Tri_Denombrement(int poids){
+    public void Tri_Denombrement(int digitIndex){
         int k = maxValue();
         int  nb[] = new int[k+1];
         int  pos[] = new int[k+1];
@@ -53,29 +53,26 @@ public class TriParBase {
             nb[i] = 0;
         }
         for (int i=0; i<getSize(); i++){
-            //System.out.println(getDigit(array.get(i), poids));
-            nb[getDigit(array.get(i), poids)]= nb[getDigit(array.get(i), poids)] + 1;
+            nb[getDigit(array.get(i), digitIndex)]= nb[getDigit(array.get(i), digitIndex)] + 1;
         }
         pos[0]=0;
         for (int i=1; i<=k; i++){
             pos[i] = pos[i-1] + nb[i-1];
         }
         for (int i=0; i<this.getSize(); i++){
-            result.set(pos[getDigit(array.get(i), poids)], array.get(i));
-            //result.set(array.get(i), array.get(i));
-            pos[getDigit(array.get(i), poids)] = pos[getDigit(array.get(i), poids)] + 1;
-            //pos[array.get(i)] = pos[array.get(i)] + 1;
+            result.set(pos[getDigit(array.get(i), digitIndex)], array.get(i));
+            pos[getDigit(array.get(i), digitIndex)] = pos[getDigit(array.get(i), digitIndex)] + 1;
         }
         setArray(result);
     }
-    public int getDigit(int number, int poids){
-        int digit = number % (int)Math.pow(10, poids);
+    public int getDigit(int number, int digitIndex){
+        int digit = number % (int)Math.pow(10, digitIndex);
         return digit;
     }
 
     /**Tri par Base*/
     public void Tri_Par_Base(){
-        int numberMaxOfDigits = String.valueOf(maxValue()).length();
+        int numberMaxOfDigits = String.valueOf(maxValue()).length(); //nombre de chiffres du plus grand nombre
         for (int i=1; i<=numberMaxOfDigits; i++){
             Tri_Denombrement(i);
         }
@@ -83,23 +80,24 @@ public class TriParBase {
 
     /**Tests*/
     public static void main(String args[]){
-        averageTime();
-        //test_Tri_Denombrement();
+        //averageTime();
+        test_Tri_Denombrement();
     }
     public static ArrayList<Integer> makeArray(){
-        /*Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.println("Nombre d'éléments: ");
-        int size = input.nextInt();*/
-        int size =1000;
+        int size = input.nextInt();
+        //int size =1000;
         ArrayList<Integer> array = new ArrayList<>();
         Random rand = new Random();
         for (int i = 0; i<size; i++){
-            array.add(rand.nextInt(1000));
+            array.add(rand.nextInt(100000));
         }
         return array;
     }
     public static float test_Tri_Denombrement(){
         TriParBase sequence = new TriParBase(makeArray());
+        System.out.println("**************");
         System.out.println("Tableau initial: \n" + sequence.toString());
         long startTime = System.nanoTime();
         sequence.Tri_Par_Base();
@@ -113,7 +111,7 @@ public class TriParBase {
     public static void averageTime(){
         float s=0;
         int i=1;
-        while (i<=10){
+        while (i<=100){
             s=s+test_Tri_Denombrement();
             i++;
         }

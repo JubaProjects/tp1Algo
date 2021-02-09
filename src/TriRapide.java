@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -60,18 +59,18 @@ public class TriRapide {
 
     /**Tests*/
     public static void main(String args[]){
-        averageTime();
-        //test_Tri_Rapide();
+        //averageTime();
+        test_Tri_Rapide();
     }
     public static ArrayList<Integer> makeArray(){
-        /*Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.println("Nombre d'éléments: ");
-        int size = input.nextInt();*/
-        int size=1000;
+        int size = input.nextInt();
+        //int size=1000;
         ArrayList<Integer> array = new ArrayList<>();
         Random rand = new Random();
         for (int i = 0; i<size; i++){
-            array.add(rand.nextInt(1000));
+            array.add(rand.nextInt(100000));
         }
         return array;
     }
@@ -90,7 +89,7 @@ public class TriRapide {
     public static void averageTime(){
         float s=0;
         int i=1;
-        while (i<=10){
+        while (i<=100){
             s=s+test_Tri_Rapide();
             i++;
         }

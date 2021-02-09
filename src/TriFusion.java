@@ -1,24 +1,24 @@
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class TriFusion {
-    private LinkedList<Integer> list;
+    private Queue<Integer> list;
 
     /**Constructeur*/
-    public TriFusion(LinkedList<Integer> array) {
-        this.list = array;
+    public TriFusion() {
+        list = new LinkedList<>();
     }
 
     /**Setter*/
-    public void setList(LinkedList<Integer> list) {
+    public void setList(Queue<Integer> list) {
         this.list = list;
     }
 
     /**Autres méthodes*/
     public boolean isSorted(){
+        int val;
         for (int i=0; i<list.size()-1; i++){
-            if (list.get(i)>list.get(i+1)) return false;
+            val = list.poll();
+            if (val>list.peek()) return false;
         }
         return true;
     }
@@ -30,15 +30,14 @@ public class TriFusion {
     public void tri_Fusion(){
         setList(sortArray_Fusion(list));
     }
-    public LinkedList<Integer> sortArray_Fusion(LinkedList<Integer> seq){
+    public Queue<Integer> sortArray_Fusion(Queue<Integer> seq){
+        int initialSize = seq.size();
         if (seq.size() > 1){
-            LinkedList<Integer> seq1 = new LinkedList<>();
-            for (int i=0; i<seq.size()/2; i++){
-                seq1.add(seq.get(i));
-            }
-            LinkedList<Integer> seq2 = new LinkedList<>();
-            for (int i=seq.size()/2; i<seq.size(); i++){
-                seq2.add(seq.get(i));
+            Queue<Integer> seq1 = new LinkedList<>();
+            Queue<Integer> seq2 = new LinkedList<>();
+            for (int i=0; i<initialSize; i++){
+                if (i%2 == 0){seq1.add(seq.poll());}
+                else         {seq2.add(seq.poll());}
             }
             seq1 = sortArray_Fusion(seq1);
             seq2= sortArray_Fusion(seq2);
@@ -46,48 +45,46 @@ public class TriFusion {
         }
         return seq;
     }
-    public LinkedList<Integer> fusion(LinkedList<Integer> s1, LinkedList<Integer> s2){
-        LinkedList<Integer> fusion = new LinkedList<>();
-        int index1 =0;
-        int index2 =0;
-        while (index1 < s1.size() && index2 < s2.size()){
-            if(s1.get(index1) <= s2.get(index2)){
-                fusion.add(s1.get(index1));
-                index1++;
+    public Queue<Integer> fusion(Queue<Integer> s1, Queue<Integer> s2){
+        Queue<Integer> fusion = new LinkedList<>();
+
+        while (!s1.isEmpty() && !s2.isEmpty()){
+            if(s1.peek() <= s2.peek()){
+                fusion.add(s1.poll());
             }
             else {
-                fusion.add(s2.get(index2));
-                index2++;
+                fusion.add(s2.poll());
             }
         }
-        if(index1<s1.size()) {
-            fusion.addAll(s1.subList(index1, s1.size()));
+        if(!s1.isEmpty()) {
+            fusion.addAll(s1);
         }
         else{
-            fusion.addAll(s2.subList(index2, s2.size()));
+            fusion.addAll(s2);
         }
         return fusion;
     }
 
     /**Tests*/
     public static void main(String args[]){
-        //test_Tri_Fusion();
-        averageTime();
+        test_Tri_Fusion();
+        //averageTime();
     }
-    public static LinkedList<Integer> makeList(){
-        /*Scanner input = new Scanner(System.in);
+    public static Queue<Integer> makeList(){
+        Scanner input = new Scanner(System.in);
         System.out.println("Nombre d'éléments: ");
-        int size = input.nextInt();*/
-        int size=1000;
-        LinkedList<Integer> array = new LinkedList<>();
+        int size = input.nextInt();
+        //int size=1000;
+        Queue<Integer> array = new LinkedList<>();
         Random rand = new Random();
         for (int i = 0; i<size; i++){
-            array.add(rand.nextInt(100));
+            array.add(rand.nextInt(100000));
         }
         return array;
     }
     public static float test_Tri_Fusion(){
-        TriFusion sequence = new TriFusion(makeList());
+        TriFusion sequence = new TriFusion();
+        sequence.setList(makeList());
         System.out.println("Tableau initial: \n" + sequence.toString());
         long startTime = System.nanoTime();
         sequence.tri_Fusion();
@@ -101,7 +98,7 @@ public class TriFusion {
     public static void averageTime(){
         float s=0;
         int i=1;
-        while (i<=10){
+        while (i<=100){
             s=s+test_Tri_Fusion();
             i++;
         }
