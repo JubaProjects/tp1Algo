@@ -39,22 +39,27 @@ public class TriRapide {
     public void tri_Rapide(){
         setArray(quickSort_aux(0, getSize()-1));
     }
+
     public ArrayList<Integer> quickSort_aux(int debut, int fin){
-        if (debut>=fin) return array;
+        if(debut<fin){
+            int pivot = array.get(debut);
+            int m = partition(debut,fin, pivot);
+            quickSort_aux(debut,m);
+            quickSort_aux(m+1,fin);
+        }
+        return array;
+    }
+
+    public int partition(int debut, int fin, int p ){
+        int pivot = p ;
         int i = debut;
         int j = fin;
-        int pivot = array.get(Math.abs((debut+fin)/2));
-        while (i <= j){
-            while (array.get(i) < pivot) i++;
-            while (array.get(j) > pivot) j--;
-            if (i<=j){
-                permutation(i, j);
-                i++; j--;
-            }
+        while (i < j) {
+            while (array.get(j) > pivot ) {j--;}
+            while (array.get(i) < pivot) {i++;}
+            permutation(i,j);
         }
-        quickSort_aux(debut, j);
-        quickSort_aux(i, fin);
-        return array;
+        return j;
     }
 
     /**Tests*/
